@@ -1,7 +1,6 @@
 module Whoaz
   class Whois
     attr_accessor :name, :organization, :address, :phone, :fax, :email, :nameservers
-    attr_accessor :free
 
     def initialize(domain)
       post_domain = domain.split('.', 2)
@@ -33,7 +32,7 @@ module Whoaz
       end
 
       @name ||= @organization
-      @organization = nil if @name == @organization
+      @organization = nil if @name.eql? @organization
 
       doc.xpath('//table[4]/tr/td[2]/table[2]/td/table/tr/td[4]/table').each do |nameserver|
         @nameservers = [
@@ -49,6 +48,14 @@ module Whoaz
       end
 
       @nameservers.try(:compact!)
+    end
+
+    def free?
+      @free ? true : false
+    end
+
+    def registered?
+      !free?
     end
   end
 end

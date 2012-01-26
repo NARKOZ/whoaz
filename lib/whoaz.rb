@@ -16,8 +16,4 @@ module Whoaz
     raise EmptyDomain, "Domain not specified" if domain.empty?
     Whoaz::Whois.new(domain)
   end
-
-  def self.free?(domain='')
-    whois(domain).free
-  end
 end

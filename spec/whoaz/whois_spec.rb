@@ -2,7 +2,6 @@ require 'spec_helper'
 
 describe Whoaz::Whois do
   it { Whoaz.should respond_to :whois }
-  it { Whoaz.should respond_to :free? }
 
   describe "empty domain query" do
     it "should raise EmptyDomain" do
@@ -17,11 +16,29 @@ describe Whoaz::Whois do
     end
   end
 
-  describe ".free?" do
-    before { fake_url Whoaz::WHOIS_URL, 'free', {:domain => '404', :dom => '.az'} }
+  context "should check domain registration" do
+    context "when registered" do
+      before  { fake_url Whoaz::WHOIS_URL, 'organization', {:domain => 'google', :dom => '.az'} }
 
-    it "should return true when domain is free" do
-      Whoaz.free?('404.az').should be_true
+      describe "#free?" do
+        specify { Whoaz.whois('google.az').free?.should be_false }
+      end
+
+      describe "#registered?" do
+        specify { Whoaz.whois('google.az').registered?.should be_true }
+      end
+    end
+
+    context "when not registered" do
+      before  { fake_url Whoaz::WHOIS_URL, 'free', {:domain => '404', :dom => '.az'} }
+
+      describe "#free?" do
+        specify { Whoaz.whois('google.az').free?.should be_true }
+      end
+
+      describe "#registered?" do
+        specify { Whoaz.whois('404.az').registered?.should be_false }
+      end
     end
   end
 

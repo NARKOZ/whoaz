@@ -8,9 +8,9 @@ version = Whoaz::VERSION
 
 puts "\nWhoaz Version #{version}\n\n"
 
-if Whoaz.free? domain
-  puts "Domain is free.\n\n"
-  puts "NOTE: FREE DOMAIN IS NOT INDICATIVE OF THE AVAILABILITY OF A DOMAIN NAME."
+if query.free?
+  puts "Domain #{domain} is not registered.\n\n"
+  puts "NOTE: NOT REGISTERED DOMAIN IS NOT INDICATIVE OF THE AVAILABILITY OF A DOMAIN NAME."
   exit
 end
 
