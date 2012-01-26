@@ -36,19 +36,19 @@ module Whoaz
       @organization = nil if @name == @organization
 
       doc.xpath('//table[4]/tr/td[2]/table[2]/td/table/tr/td[4]/table').each do |nameserver|
-        @nameservers = {
-          :ns1 => nameserver.at_xpath('tr[2]/td[2]').try(:text),
-          :ns2 => nameserver.at_xpath('tr[3]/td[2]').try(:text),
-          :ns3 => nameserver.at_xpath('tr[4]/td[2]').try(:text),
-          :ns4 => nameserver.at_xpath('tr[5]/td[2]').try(:text),
-          :ns5 => nameserver.at_xpath('tr[6]/td[2]').try(:text),
-          :ns6 => nameserver.at_xpath('tr[7]/td[2]').try(:text),
-          :ns7 => nameserver.at_xpath('tr[8]/td[2]').try(:text),
-          :ns8 => nameserver.at_xpath('tr[9]/td[2]').try(:text)
-        }
+        @nameservers = [
+          nameserver.at_xpath('tr[2]/td[2]').try(:text),
+          nameserver.at_xpath('tr[3]/td[2]').try(:text),
+          nameserver.at_xpath('tr[4]/td[2]').try(:text),
+          nameserver.at_xpath('tr[5]/td[2]').try(:text),
+          nameserver.at_xpath('tr[6]/td[2]').try(:text),
+          nameserver.at_xpath('tr[7]/td[2]').try(:text),
+          nameserver.at_xpath('tr[8]/td[2]').try(:text),
+          nameserver.at_xpath('tr[9]/td[2]').try(:text)
+        ]
       end
 
-      @nameservers.delete_if {|k, v| v.nil?} unless @nameservers.nil?
+      @nameservers.try(:compact!)
     end
   end
 end

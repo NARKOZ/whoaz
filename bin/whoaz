@@ -16,9 +16,9 @@ end
 
 puts "Domain Name: #{domain.upcase}"
 
-query.nameservers.each_value do |ns|
+query.nameservers.each do |ns|
   puts "Name Server: #{ns.upcase}"
-end if query.nameservers
+end
 
 puts "\nRegistrant:"
 puts "  Organization: #{query.organization}" if query.organization

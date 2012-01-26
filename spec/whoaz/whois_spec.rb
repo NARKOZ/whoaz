@@ -83,7 +83,7 @@ describe Whoaz::Whois do
 
       describe "#nameservers" do
         it "should return domain nameservers" do
-          subject.nameservers.should == {:ns1 => "ns1.google.com", :ns2 => "ns2.google.com"}
+          subject.nameservers.should == ["ns1.google.com", "ns2.google.com"]
         end
       end
     end
