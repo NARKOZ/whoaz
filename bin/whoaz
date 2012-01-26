@@ -1,0 +1,30 @@
+#!/usr/bin/env ruby
+
+require 'whoaz'
+
+domain  = ARGV.first
+query   = Whoaz.whois domain
+version = Whoaz::VERSION
+
+puts "\nWhoaz Version #{version}\n\n"
+
+if Whoaz.free? domain
+  puts "Domain is free.\n\n"
+  puts "NOTE: FREE DOMAIN IS NOT INDICATIVE OF THE AVAILABILITY OF A DOMAIN NAME."
+  exit
+end
+
+puts "Domain Name: #{domain.upcase}"
+
+query.nameservers.each_value do |ns|
+  puts "Name Server: #{ns.upcase}"
+end if query.nameservers
+
+puts "\nRegistrant:"
+puts "  Organization: #{query.organization}" if query.organization
+puts "  Name:         #{query.name}
+  Address:      #{query.address}
+  Phone:        #{query.phone}
+  Fax:          #{query.fax}
+  Email:        #{query.email}
+"
