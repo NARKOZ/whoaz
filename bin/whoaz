@@ -1,15 +1,52 @@
 #!/usr/bin/env ruby
 
 require 'whoaz'
+require 'optparse'
 
-domain  = ARGV.first
-query   = Whoaz.whois domain
-version = Whoaz::VERSION
+OptionParser.new do |opt|
+  opt.banner = 'Usage: whoaz domain'
+  opt.separator ''
+  opt.separator 'Options:'
 
-puts "\nWhoaz Version #{version}\n\n"
+  opt.on_tail('-h', '--help', 'Prints this help message') do
+    puts opt
+    exit
+  end
+
+  opt.on_tail('-v', '--version', 'Prints version') do
+    puts "Whoaz #{Whoaz::VERSION}"
+    exit
+  end
+
+  begin
+    opt.parse!
+  rescue OptionParser::ParseError
+    puts opt
+    exit 1
+  end
+
+  if ARGV.size.zero?
+    puts opt
+    exit 1
+  end
+end
+
+domain = ARGV.first
+
+begin
+  query = Whoaz.whois domain
+rescue Whoaz::EmptyDomain => e
+  abort e.message
+rescue Whoaz::InvalidDomain => e
+  abort e.message
+rescue Whoaz::UnknownError => e
+  abort e.message
+end
+
+puts "\nWhoaz Version #{Whoaz::VERSION}\n\n"
 
 if query.free?
-  puts "Domain #{domain} is not registered.\n\n"
+  puts "Domain #{domain.upcase} is not registered.\n\n"
   puts "NOTE: NOT REGISTERED DOMAIN IS NOT INDICATIVE OF THE AVAILABILITY OF A DOMAIN NAME."
   exit
 end
@@ -18,7 +55,7 @@ puts "Domain Name: #{domain.upcase}"
 
 query.nameservers.each do |ns|
   puts "Name Server: #{ns.upcase}"
-end
+end if query.nameservers
 
 puts "\nRegistrant:"
 puts "  Organization: #{query.organization}" if query.organization
