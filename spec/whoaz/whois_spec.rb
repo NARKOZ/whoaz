@@ -16,6 +16,13 @@ describe Whoaz::Whois do
     end
   end
 
+  describe "less than 3 characters long domain query" do
+    it "should raise DomainNameError" do
+      fake_url Whoaz::WHOIS_URL, 'less_than_3_chars', {:domain => 'i', :dom => '.az'}
+      expect { Whoaz.whois 'i.az' }.to raise_error Whoaz::DomainNameError, 'Whois query for this domain name is not supported.'
+    end
+  end
+
   context "should check domain registration" do
     context "when registered" do
       before  { fake_url Whoaz::WHOIS_URL, 'organization', {:domain => 'google', :dom => '.az'} }

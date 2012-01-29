@@ -22,6 +22,13 @@ module Whoaz
         @free = true
       end
 
+      if @name.nil? && @organization.nil?
+        if doc.at_xpath('//table[4]/tr/td[2]/table[2]/td/p').
+            try(:text).try(:strip) == 'Using of domain names contains less than 3 symbols is not allowed'
+          raise DomainNameError, "Whois query for this domain name is not supported."
+        end
+      end
+
       doc.xpath('//table[4]/tr/td[2]/table[2]/td/table/tr').each do |registrant|
         @organization = registrant.at_xpath('td[2]/table/tr[1]/td[2]').try(:text)
         @name         = registrant.at_xpath('td[2]/table/tr[2]/td[2]').try(:text)
