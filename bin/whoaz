@@ -35,11 +35,7 @@ domain = ARGV.first
 
 begin
   query = Whoaz.whois domain
-rescue Whoaz::EmptyDomain => e
-  abort e.message
-rescue Whoaz::InvalidDomain => e
-  abort e.message
-rescue Whoaz::UnknownError => e
+rescue Whoaz::Error => e
   abort e.message
 end
 

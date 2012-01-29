@@ -1,5 +1,6 @@
 module Whoaz
-  class EmptyDomain < ArgumentError; end
-  class InvalidDomain < ArgumentError; end
-  class UnknownError < StandardError; end
+  class Error < StandardError; end
+  class EmptyDomain < Error; end
+  class InvalidDomain < Error; end
+  class ServerError < Error; end
 end

@@ -5,7 +5,7 @@ module Whoaz
     def initialize(domain)
       post_domain = domain.split('.', 2)
       raise InvalidDomain, "Invalid domain specified" unless
-        MAIN_TLD.include?(post_domain.last) || REGIONAL_TLD.include?(post_domain.last)
+        [MAIN_TLD, REGIONAL_TLD].any? {|a| a.include? post_domain.last}
 
       url = URI WHOIS_URL
       req = Net::HTTP::Post.new(url.path, 'Referer' => WHOIS_REFERER)
@@ -15,10 +15,10 @@ module Whoaz
       if res.code.to_i == 200
         doc = Nokogiri::HTML(res.body)
       else
-        raise UnknownError, "Server responded with code #{res.code}"
+        raise ServerError, "Server responded with code #{res.code}"
       end
 
-      if doc.at_xpath('//table[4]/tr/td[2]/table[2]/tr[3]/td[1]').try(:text).try(:strip) == 'This domain is free.'
+      if doc.at_xpath('//table[4]/tr/td[2]/table[2]/tr[3]/td').try(:text).try(:strip) == 'This domain is free.'
         @free = true
       end
 
@@ -30,9 +30,6 @@ module Whoaz
         @fax          = registrant.at_xpath('td[3]/table/tr[3]/td[2]').try(:text)
         @email        = registrant.at_xpath('td[3]/table/tr[4]/td[2]').try(:text)
       end
-
-      @name ||= @organization
-      @organization = nil if @name.eql? @organization
 
       doc.xpath('//table[4]/tr/td[2]/table[2]/td/table/tr/td[4]/table').each do |nameserver|
         @nameservers = [
@@ -48,6 +45,7 @@ module Whoaz
       end
 
       @nameservers.try(:compact!)
+      @name, @organization = @organization, nil if @name.nil?
     end
 
     def free?
