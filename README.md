@@ -36,4 +36,4 @@ For more information see: [http://narkoz.github.com/whoaz](http://narkoz.github.
 
 ## Copyright
 
-Copyright (c) 2012 Nihad Abbasov
+Released under the BSD 2-clause license. Copyright (c) 2012 Nihad Abbasov
