@@ -6,7 +6,7 @@ Gem::Specification.new do |gem|
   gem.email         = ["mail@narkoz.me"]
   gem.description   = %q{A gem that provides a nice way to interact with Whois.Az}
   gem.summary       = %q{Gets domain whois information from Whois.Az}
-  gem.homepage      = "https://github.com/narkoz/whoaz"
+  gem.homepage      = "http://narkoz.github.com/whoaz"
 
   gem.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   gem.files         = `git ls-files`.split("\n")
