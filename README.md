@@ -13,7 +13,7 @@ gem install whoaz
 Bundler:
 
 ```ruby
-gem 'whoaz'
+gem 'whoaz', '~> 1.0.0'
 ```
 
 ## Usage
@@ -31,6 +31,8 @@ whoaz.registered?
 ```sh
 whoaz google.az
 ```
+
+For more information see: [http://narkoz.github.com/whoaz](http://narkoz.github.com/whoaz)
 
 ## Copyright
 
