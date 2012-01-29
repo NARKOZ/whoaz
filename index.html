@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Whoaz</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+
+    <script src="js/prettify.js"></script>
+    <script src="js/bootstrap-tab.js"></script>
+    <script src="js/bootstrap-dropdown.js"></script>
+    <link href="css/prettify.css" rel="stylesheet">
+    <link href="css/bootstrap.css" rel="stylesheet">
+
+    <style>
+      body {
+        padding-top: 20px;
+      }
+    </style>
+
+    <script>
+      $(function(){
+        prettyPrint();
+      });
+    </script>
+  </head>
+
+  <body>
+
+    <div class="container">
+
+      <h1>Whoaz <a href="https://twitter.com/share" class="twitter-share-button" data-related="narkoz" data-lang="en" data-count="none" data-via="narkoz" data-url="http://narkoz.github.com/whoaz">Tweet</a></h1>
+
+      <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="http://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+
+      <ul class="nav pills">
+        <li class="active"><a data-toggle="pill" href="#wat">What is it?</a></li>
+        <li><a data-toggle="pill" href="#why">Why?</a></li>
+        <li><a data-toggle="pill" href="#install">Install</a></li>
+        <li><a data-toggle="pill" href="#howto">How to use</a></li>
+        <li class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" href="#">More <b class="caret"></b></a>
+          <ul class="dropdown-menu">
+            <li><a data-toggle="pill" href="https://github.com/NARKOZ/whoaz" target="_blank">Github</a></li>
+            <li><a data-toggle="pill" href="https://rubygems.org/gems/whoaz" target="_blank">Rubygems</a></li>
+            <li><a data-toggle="pill" href="http://travis-ci.org/NARKOZ/whoaz" target="_blank">Travis CI</a></li>
+          </ul>
+        </li>
+      </ul>
+
+      <div id="myTabContent" class="tab-content">
+        <div class="tab-pane fade in active" id="wat">
+          <p><i class="icon ok"></i> A ruby gem that provides a nice way to interact with <a href="http://whois.az" target="_blank">Whois.Az</a></p>
+          <p>Source: <a href="https://github.com/NARKOZ/whoaz">https://github.com/narkoz/whoaz</a></p>
+          <p>Issues: <a href="https://github.com/NARKOZ/whoaz/issues">https://github.com/narkoz/whoaz/issues</a></p>
+        </div>
+
+        <div class="tab-pane fade" id="why">
+          <p>Before:</p>
+          <p><img src="before.png" alt="before whoaz"></p>
+          <p>After:</p>
+          <p><img src="after.png" alt="after whoaz"></p>
+        </div>
+
+        <div class="tab-pane fade" id="install">
+          <p>Install it via bundler:</p>
+<pre class="prettyprint">
+gem 'whoaz'
+</pre>
+
+          <p>Install it via command line:</p>
+<pre class="prettyprint">
+gem install whoaz
+</pre>
+
+<p>Plays nice with Ruby 1.8.7, 1.9.2, 1.9.3, and HEAD.</p>
+        </div>
+
+        <div class="tab-pane fade" id="howto">
+          <h3>Ruby</h3>
+          <div class="row">
+            <div class="span5">
+              <table class="table table-bordered table-condensed">
+                <thead>
+                  <tr>
+                    <th>Property</th>
+                    <th>Class</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>organization</code></td>
+                    <td>String / Nil</td>
+                  </tr>
+                  <tr>
+                    <td><code>name</code></td>
+                    <td>String / Nil</td>
+                  </tr>
+                  <tr>
+                    <td><code>address</code></td>
+                    <td>String / Nil</td>
+                  </tr>
+                  <tr>
+                    <td><code>phone</code></td>
+                    <td>String / Nil</td>
+                  </tr>
+                  <tr>
+                    <td><code>fax</code></td>
+                    <td>String / Nil</td>
+                  </tr>
+                  <tr>
+                    <td><code>email</code></td>
+                    <td>String / Nil</td>
+                  </tr>
+                  <tr>
+                    <td><code>nameservers</code></td>
+                    <td>Array / Nil</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="span5">
+              <table class="table table-bordered table-condensed">
+                <thead>
+                  <tr>
+                    <th>Method</th>
+                    <th>Class</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>free?</code></td>
+                    <td>Boolean</td>
+                  </tr>
+                  <tr>
+                    <td><code>registered?</code></td>
+                    <td>Boolean</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <p>Example:</p>
+<pre class="prettyprint linenums">
+:001 > require 'whoaz'
+# => true
+:002 > w = Whoaz.whois 'google.az'
+# => #&lt;Whoaz::Whois:0x000001010a98b0 @organization="Google Inc.", @name="Admin", @address="94043, Mountain View, 1600 Amphitheatre Parkway", @phone="+16503300100", @fax="+16506188571", @email="dns-admin@google.com", @nameservers=["ns1.google.com", "ns2.google.com"]&gt;
+:003 > w.registered?
+# => true
+:004 > w.free?
+# => false
+</pre>
+
+          <h3>CLI</h3>
+          <p>Usage: <code>whoaz [OPTIONS] DOMAIN</code></p>
+          <p><i class="icon cog"></i> Options: </p>
+          <p><code>-h</code>, <code>--help</code> - show help message</p>
+          <p><code>-v</code>, <code>--version</code> - show version</p>
+          <p>Example:</p>
+<pre class="prettyprint linenums">
+$ whoaz google.az
+
+Whoaz Version 1.0.0
+
+Domain Name: GOOGLE.AZ
+Name Server: NS1.GOOGLE.COM
+Name Server: NS2.GOOGLE.COM
+
+Registrant:
+  Organization: Google Inc.
+  Name:         Admin
+  Address:      94043, Mountain View, 1600 Amphitheatre Parkway
+  Phone:        +16503300100
+  Fax:          +16506188571
+  Email:        dns-admin@google.com
+</pre>
+
+          <h3>Web API</h3>
+
+          <p>Example request: <code>GET</code> <a href="http://whoaz.heroku.com/v1/google.az" target="_blank"><code>http://whoaz.heroku.com/v1/google.az</code></a></p>
+          <p>Returns whois info in JSON format:</p>
+<pre class="prettyprint linenums">
+{
+  domain: "google.az",
+  nameservers: [
+    "ns1.google.com",
+    "ns2.google.com"
+  ],
+  registrant: {
+    organization: "Google Inc.",
+    name: "Admin",
+    address: "94043, Mountain View, 1600 Amphitheatre Parkway",
+    phone: "+16503300100",
+    fax: "+16506188571",
+    email: "dns-admin@google.com"
+  }
+}
+</pre>
+        </div>
+      </div>
+
+    </div>
+  </body>
+</html>
