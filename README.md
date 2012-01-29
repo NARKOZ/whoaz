@@ -1,4 +1,4 @@
-# Whoaz
+# Whoaz [![Build Status](https://secure.travis-ci.org/NARKOZ/whoaz.png)](http://travis-ci.org/NARKOZ/whoaz)
 
 Whoaz is a ruby gem that provides a nice way to interact with Whois.Az
 
