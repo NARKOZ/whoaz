@@ -1,5 +1,6 @@
 require 'whoaz/version'
-require 'whoaz/ruby_ext'
+require 'whoaz/core_ext/object'
+require 'whoaz/core_ext/string'
 require 'whoaz/whois'
 require 'whoaz/errors'
 require 'net/http'
