@@ -1,3 +1,4 @@
+# encoding: utf-8
 require 'spec_helper'
 
 describe Whoaz::Whois do
@@ -13,6 +14,7 @@ describe Whoaz::Whois do
     it "should raise InvalidDomain" do
       expect { Whoaz.whois 'google' }.to raise_error Whoaz::InvalidDomain, 'Invalid domain specified'
       expect { Whoaz.whois 'goo.gl' }.to raise_error Whoaz::InvalidDomain, 'Invalid domain specified'
+      expect { Whoaz.whois 'алм.az' }.to raise_error Whoaz::InvalidDomain, 'Domain contains non-ASCII characters'
     end
   end
 
