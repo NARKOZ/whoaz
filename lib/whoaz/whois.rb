@@ -24,32 +24,15 @@ module Whoaz
     # @return [Array] An array of nameservers.
     attr_reader :nameservers
 
-    class << self
-      attr_accessor :page
-    end
-
     # Initializes a new Whois object.
     #
     # @param  [String] domain The domain name required to query.
     # @return [Whoaz::Whois]
     def initialize(domain)
-      @domain     = domain
-      post_domain = domain.split('.', 2)
-      raise InvalidDomain, "Invalid domain specified" unless
-        [MAIN_TLD, REGIONAL_TLD].any? {|a| a.include? post_domain.last}
+      @domain = domain
+      @@response = query
 
-      url = URI WHOIS_URL
-      req = Net::HTTP::Post.new(url.path, 'Referer' => WHOIS_REFERER)
-      req.set_form_data('lang' => 'en', 'domain' => post_domain.first, 'dom' => ".#{post_domain.last}")
-      res = Net::HTTP.new(url.host, url.port).start {|http| http.request(req)}
-
-      if res.code.to_i == 200
-        Whois.page = Nokogiri::HTML(res.body)
-      else
-        raise ServerError, "Server responded with code #{res.code}"
-      end
-
-      Whois.page.xpath('//table[4]/tr/td[2]/table[2]/td/table/tr').each do |registrant|
+      @@response.xpath('//table[4]/tr/td[2]/table[2]/td/table/tr').each do |registrant|
         @organization = registrant.at_xpath('td[2]/table/tr[1]/td[2]').try(:text)
         @name         = registrant.at_xpath('td[2]/table/tr[2]/td[2]').try(:text)
         @address      = registrant.at_xpath('td[3]/table/tr[1]/td[2]').try(:text)
@@ -58,7 +41,7 @@ module Whoaz
         @email        = registrant.at_xpath('td[3]/table/tr[4]/td[2]').try(:text)
       end
 
-      Whois.page.xpath('//table[4]/tr/td[2]/table[2]/td/table/tr/td[4]/table').each do |nameserver|
+      @@response.xpath('//table[4]/tr/td[2]/table[2]/td/table/tr/td[4]/table').each do |nameserver|
         @nameservers = [
           nameserver.at_xpath('tr[2]/td[2]').try(:text),
           nameserver.at_xpath('tr[3]/td[2]').try(:text),
@@ -75,7 +58,7 @@ module Whoaz
       @name, @organization = @organization, nil if @name.nil?
 
       if @name.nil? && @organization.nil?
-        raise DomainNameError, "Whois query for this domain name is not supported." if not_supported_domain? Whois.page
+        raise DomainNameError, "Whois query for this domain name is not supported." if not_supported? @@response
       end
     end
 
@@ -83,7 +66,7 @@ module Whoaz
     #
     # @return [Boolean]
     def free?
-      Whois.page.at_xpath('//table[4]/tr/td[2]/table[2]/tr[3]/td').try(:text).try(:strip) == 'This domain is free.'
+      @@response.at_xpath('//table[4]/tr/td[2]/table[2]/tr[3]/td').try(:text).try(:strip) == 'This domain is free.'
     end
 
     # Checks if the domain name is a registered or not.
@@ -97,8 +80,25 @@ module Whoaz
 
     private
 
-    def not_supported_domain?(page)
-      page.at_xpath('//table[4]/tr/td[2]/table[2]/td/p').try(:text).
+    def query
+      post_domain = @domain.split('.', 2)
+      raise InvalidDomain, "Invalid domain specified" unless
+        [MAIN_TLD, REGIONAL_TLD].any? {|a| a.include? post_domain.last}
+
+      url = URI WHOIS_URL
+      req = Net::HTTP::Post.new(url.path, 'Referer' => WHOIS_REFERER)
+      req.set_form_data('lang' => 'en', 'domain' => post_domain.first, 'dom' => ".#{post_domain.last}")
+      res = Net::HTTP.new(url.host, url.port).start {|http| http.request(req)}
+
+      if res.code.to_i == 200
+        Nokogiri::HTML res.body
+      else
+        raise ServerError, "Server responded with code #{res.code}"
+      end
+    end
+
+    def not_supported?(response)
+      response.at_xpath('//table[4]/tr/td[2]/table[2]/td/p').try(:text).
         try(:strip) == 'Using of domain names contains less than 3 symbols is not allowed'
     end
   end
