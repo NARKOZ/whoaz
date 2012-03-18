@@ -82,7 +82,7 @@ module Whoaz
 
     def query
       post_domain = @domain.split('.', 2)
-      raise InvalidDomain, "Invalid domain specified" unless
+      raise InvalidDomain, "Invalid domain name is specified" unless
         [MAIN_TLD, REGIONAL_TLD].any? {|a| a.include? post_domain.last}
 
       url = URI WHOIS_URL

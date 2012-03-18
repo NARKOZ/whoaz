@@ -18,8 +18,8 @@ module Whoaz
   # @return [Whoaz::Whois]
   def self.whois(domain='')
     domain = domain.to_s.strip.downcase
-    raise EmptyDomain, "Domain not specified" if domain.empty?
-    raise InvalidDomain, "Domain contains non-ASCII characters" unless domain.ascii_only?
+    raise EmptyDomain, "Domain name is not specified" if domain.empty?
+    raise InvalidDomain, "Domain name contains non-ASCII characters" unless domain.ascii_only?
     Whoaz::Whois.new(domain)
   end
 end

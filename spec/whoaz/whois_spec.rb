@@ -6,15 +6,15 @@ describe Whoaz::Whois do
 
   describe "empty domain query" do
     it "should raise EmptyDomain" do
-      expect { Whoaz.whois }.to raise_error Whoaz::EmptyDomain, 'Domain not specified'
+      expect { Whoaz.whois }.to raise_error Whoaz::EmptyDomain, 'Domain name is not specified'
     end
   end
 
   describe "invalid domain query" do
     it "should raise InvalidDomain" do
-      expect { Whoaz.whois 'google' }.to raise_error Whoaz::InvalidDomain, 'Invalid domain specified'
-      expect { Whoaz.whois 'goo.gl' }.to raise_error Whoaz::InvalidDomain, 'Invalid domain specified'
-      expect { Whoaz.whois 'алм.az' }.to raise_error Whoaz::InvalidDomain, 'Domain contains non-ASCII characters'
+      expect { Whoaz.whois 'google' }.to raise_error Whoaz::InvalidDomain, 'Invalid domain name is specified'
+      expect { Whoaz.whois 'goo.gl' }.to raise_error Whoaz::InvalidDomain, 'Invalid domain name is specified'
+      expect { Whoaz.whois 'алм.az' }.to raise_error Whoaz::InvalidDomain, 'Domain name contains non-ASCII characters'
     end
   end
 
