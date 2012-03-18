@@ -1,11 +1,34 @@
 module Whoaz
   class Whois
-    attr_reader :name, :organization, :address, :phone, :fax, :email, :nameservers
+    # @return [String] The name of the registrant.
+    attr_reader :name
+
+    # @return [String, nil] The organization of the registrant, or nil.
+    attr_reader :organization
+
+    # @return [String] The address of the registrant.
+    attr_reader :address
+
+    # @return [String] The phone of the registrant.
+    attr_reader :phone
+
+    # @return [String] The fax of the registrant.
+    attr_reader :fax
+
+    # @return [String] The email of the registrant.
+    attr_reader :email
+
+    # @return [Array] An array of nameservers.
+    attr_reader :nameservers
 
     class << self
       attr_accessor :page
     end
 
+    # Initializes a new Whois object.
+    #
+    # @param  [String] domain The domain name required to query.
+    # @return [Whoaz::Whois]
     def initialize(domain)
       post_domain = domain.split('.', 2)
       raise InvalidDomain, "Invalid domain specified" unless
@@ -52,10 +75,16 @@ module Whoaz
       end
     end
 
+    # Checks if the domain name is a free or not.
+    #
+    # @return [Boolean]
     def free?
       Whois.page.at_xpath('//table[4]/tr/td[2]/table[2]/tr[3]/td').try(:text).try(:strip) == 'This domain is free.'
     end
 
+    # Checks if the domain name is a registered or not.
+    #
+    # @return [Boolean]
     def registered?
       !free?
     end
