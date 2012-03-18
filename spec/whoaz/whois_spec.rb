@@ -36,6 +36,10 @@ describe Whoaz::Whois do
       describe "#registered?" do
         specify { Whoaz.whois('google.az').registered?.should be_true }
       end
+
+      describe "#available?" do
+        specify { Whoaz.whois('google.az').available?.should be_false }
+      end
     end
 
     context "when not registered" do
@@ -47,6 +51,10 @@ describe Whoaz::Whois do
 
       describe "#registered?" do
         specify { Whoaz.whois('404.az').registered?.should be_false }
+      end
+
+      describe "#available?" do
+        specify { Whoaz.whois('google.az').available?.should be_true }
       end
     end
   end

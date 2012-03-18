@@ -89,6 +89,8 @@ module Whoaz
       !free?
     end
 
+    alias_method :available?, :free?
+
     private
 
     def not_supported_domain?(page)
