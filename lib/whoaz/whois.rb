@@ -1,5 +1,8 @@
 module Whoaz
   class Whois
+    # @return [String] The queried domain name.
+    attr_reader :domain
+
     # @return [String] The name of the registrant.
     attr_reader :name
 
@@ -30,6 +33,7 @@ module Whoaz
     # @param  [String] domain The domain name required to query.
     # @return [Whoaz::Whois]
     def initialize(domain)
+      @domain     = domain
       post_domain = domain.split('.', 2)
       raise InvalidDomain, "Invalid domain specified" unless
         [MAIN_TLD, REGIONAL_TLD].any? {|a| a.include? post_domain.last}

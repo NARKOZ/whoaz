@@ -64,6 +64,12 @@ describe Whoaz::Whois do
       before  { fake_url Whoaz::WHOIS_URL, 'person', {:domain => 'johnsmith', :dom => '.az'} }
       subject { Whoaz.whois 'johnsmith.az' }
 
+      describe "#domain" do
+        it "should return a domain name" do
+          subject.domain.should == 'johnsmith.az'
+        end
+      end
+
       describe "#organization" do
         specify { subject.organization.should be_nil }
       end
@@ -78,6 +84,12 @@ describe Whoaz::Whois do
     context "when an organization" do
       before  { fake_url Whoaz::WHOIS_URL, 'organization', {:domain => 'google', :dom => '.az'} }
       subject { Whoaz.whois 'google.az' }
+
+      describe "#domain" do
+        it "should return a domain name" do
+          subject.domain.should == 'google.az'
+        end
+      end
 
       describe "#organization" do
         it "should return a registrant organization" do
