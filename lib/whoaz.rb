@@ -1,6 +1,4 @@
 require 'whoaz/version'
-require 'whoaz/core_ext/object'
-require 'whoaz/core_ext/string'
 require 'whoaz/whois'
 require 'whoaz/errors'
 require 'net/http'
@@ -19,7 +17,7 @@ module Whoaz
   def self.whois(domain='')
     domain = domain.to_s.strip.downcase
     raise EmptyDomain, "Domain name is not specified" if domain.empty?
-    raise InvalidDomain, "Domain name contains non-ASCII characters" unless domain.ascii_only?
+    raise InvalidDomain, "Domain name contains non-ASCII characters" if domain =~ /[^\x00-\x7f]/
     Whoaz::Whois.new(domain)
   end
 end

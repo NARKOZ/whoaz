@@ -32,28 +32,28 @@ module Whoaz
       @domain = domain
 
       response.xpath('//table[4]/tr/td[2]/table[2]/td/table/tr').each do |registrant|
-        @organization = registrant.at_xpath('td[2]/table/tr[1]/td[2]').try(:text)
-        @name         = registrant.at_xpath('td[2]/table/tr[2]/td[2]').try(:text)
-        @address      = registrant.at_xpath('td[3]/table/tr[1]/td[2]').try(:text)
-        @phone        = registrant.at_xpath('td[3]/table/tr[2]/td[2]').try(:text)
-        @fax          = registrant.at_xpath('td[3]/table/tr[3]/td[2]').try(:text)
-        @email        = registrant.at_xpath('td[3]/table/tr[4]/td[2]').try(:text)
+        @organization = get_text registrant.at_xpath('td[2]/table/tr[1]/td[2]')
+        @name         = get_text registrant.at_xpath('td[2]/table/tr[2]/td[2]')
+        @address      = get_text registrant.at_xpath('td[3]/table/tr[1]/td[2]')
+        @phone        = get_text registrant.at_xpath('td[3]/table/tr[2]/td[2]')
+        @fax          = get_text registrant.at_xpath('td[3]/table/tr[3]/td[2]')
+        @email        = get_text registrant.at_xpath('td[3]/table/tr[4]/td[2]')
       end
 
       response.xpath('//table[4]/tr/td[2]/table[2]/td/table/tr/td[4]/table').each do |nameserver|
         @nameservers = [
-          nameserver.at_xpath('tr[2]/td[2]').try(:text),
-          nameserver.at_xpath('tr[3]/td[2]').try(:text),
-          nameserver.at_xpath('tr[4]/td[2]').try(:text),
-          nameserver.at_xpath('tr[5]/td[2]').try(:text),
-          nameserver.at_xpath('tr[6]/td[2]').try(:text),
-          nameserver.at_xpath('tr[7]/td[2]').try(:text),
-          nameserver.at_xpath('tr[8]/td[2]').try(:text),
-          nameserver.at_xpath('tr[9]/td[2]').try(:text)
+          get_text(nameserver.at_xpath('tr[2]/td[2]')),
+          get_text(nameserver.at_xpath('tr[3]/td[2]')),
+          get_text(nameserver.at_xpath('tr[4]/td[2]')),
+          get_text(nameserver.at_xpath('tr[5]/td[2]')),
+          get_text(nameserver.at_xpath('tr[6]/td[2]')),
+          get_text(nameserver.at_xpath('tr[7]/td[2]')),
+          get_text(nameserver.at_xpath('tr[8]/td[2]')),
+          get_text(nameserver.at_xpath('tr[9]/td[2]'))
         ]
       end
 
-      @nameservers.try(:compact!)
+      @nameservers.compact! unless @nameservers.nil?
       @name, @organization = @organization, nil if @name.nil?
 
       if @name.nil? && @organization.nil?
@@ -65,7 +65,7 @@ module Whoaz
     #
     # @return [Boolean]
     def free?
-      response.at_xpath('//table[4]/tr/td[2]/table[2]/tr[3]/td').try(:text).try(:strip) == 'This domain is free.'
+      get_text(response.at_xpath('//table[4]/tr/td[2]/table[2]/tr[3]/td')) == 'This domain is free.'
     end
     alias_method :available?, :free?
 
@@ -100,8 +100,12 @@ module Whoaz
     end
 
     def not_supported?(response)
-      response.at_xpath('//table[4]/tr/td[2]/table[2]/td/p').try(:text).
-        try(:strip) == 'Using of domain names contains less than 3 symbols is not allowed'
+      get_text(response.at_xpath('//table[4]/tr/td[2]/table[2]/td/p')) ==
+          'Using of domain names contains less than 3 symbols is not allowed'
+    end
+
+    def get_text(nokogiri_element)
+      nokogiri_element.text.strip unless nokogiri_element.nil?
     end
   end
 end
