@@ -89,7 +89,7 @@ module Whoaz
 
       url = URI WHOIS_URL
       req = Net::HTTP::Post.new(url.path, 'Referer' => WHOIS_REFERER)
-      req.set_form_data('lang' => 'en', 'domain' => post_domain.first, 'dom' => ".#{post_domain.last}")
+      req.set_form_data(:lang => 'en', :domain => post_domain.first, :dom => ".#{post_domain.last}")
       res = Net::HTTP.new(url.host, url.port).start {|http| http.request(req)}
 
       if res.code.to_i == 200
