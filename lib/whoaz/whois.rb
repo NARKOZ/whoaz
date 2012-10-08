@@ -30,9 +30,8 @@ module Whoaz
     # @return [Whoaz::Whois]
     def initialize(domain)
       @domain = domain
-      @@response = query
 
-      @@response.xpath('//table[4]/tr/td[2]/table[2]/td/table/tr').each do |registrant|
+      response.xpath('//table[4]/tr/td[2]/table[2]/td/table/tr').each do |registrant|
         @organization = registrant.at_xpath('td[2]/table/tr[1]/td[2]').try(:text)
         @name         = registrant.at_xpath('td[2]/table/tr[2]/td[2]').try(:text)
         @address      = registrant.at_xpath('td[3]/table/tr[1]/td[2]').try(:text)
@@ -41,7 +40,7 @@ module Whoaz
         @email        = registrant.at_xpath('td[3]/table/tr[4]/td[2]').try(:text)
       end
 
-      @@response.xpath('//table[4]/tr/td[2]/table[2]/td/table/tr/td[4]/table').each do |nameserver|
+      response.xpath('//table[4]/tr/td[2]/table[2]/td/table/tr/td[4]/table').each do |nameserver|
         @nameservers = [
           nameserver.at_xpath('tr[2]/td[2]').try(:text),
           nameserver.at_xpath('tr[3]/td[2]').try(:text),
@@ -58,7 +57,7 @@ module Whoaz
       @name, @organization = @organization, nil if @name.nil?
 
       if @name.nil? && @organization.nil?
-        raise DomainNameError, "Whois query for this domain name is not supported." if not_supported? @@response
+        raise DomainNameError, "Whois query for this domain name is not supported." if not_supported?(response)
       end
     end
 
@@ -66,8 +65,9 @@ module Whoaz
     #
     # @return [Boolean]
     def free?
-      @@response.at_xpath('//table[4]/tr/td[2]/table[2]/tr[3]/td').try(:text).try(:strip) == 'This domain is free.'
+      response.at_xpath('//table[4]/tr/td[2]/table[2]/tr[3]/td').try(:text).try(:strip) == 'This domain is free.'
     end
+    alias_method :available?, :free?
 
     # Checks if the domain name is a registered or not.
     #
@@ -76,9 +76,11 @@ module Whoaz
       !free?
     end
 
-    alias_method :available?, :free?
-
     private
+
+    def response
+      @response ||= query
+    end
 
     def query
       post_domain = @domain.split('.', 2)
