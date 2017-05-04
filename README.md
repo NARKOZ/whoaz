@@ -1,4 +1,4 @@
-# Whoaz [![Build Status](https://travis-ci.org/NARKOZ/whoaz.png)](http://travis-ci.org/NARKOZ/whoaz)
+# Whoaz [![Build Status](https://travis-ci.org/NARKOZ/whoaz.svg)](http://travis-ci.org/NARKOZ/whoaz)
 
 Whoaz is a ruby gem that provides a nice way to interact with Whois.Az
 
@@ -13,7 +13,7 @@ gem install whoaz
 Bundler:
 
 ```ruby
-gem 'whoaz', '~> 1.0.0'
+gem 'whoaz', '~> 2.0.0'
 ```
 
 ## Usage
@@ -32,7 +32,7 @@ whoaz.registered?
 whoaz google.az
 ```
 
-For more information see: [http://narkoz.github.com/whoaz](http://narkoz.github.com/whoaz)
+For more information see: [https://narkoz.github.io/whoaz](https://narkoz.github.io/whoaz)
 
 ## Copyright
 
