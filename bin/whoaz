@@ -40,24 +40,4 @@ rescue Whoaz::Error => e
 end
 
 puts "\nWhoaz Version #{Whoaz::VERSION}\n\n"
-
-if query.free?
-  puts "Domain #{domain.upcase} is not registered.\n\n"
-  puts "NOTE: NOT REGISTERED DOMAIN IS NOT INDICATIVE OF THE AVAILABILITY OF A DOMAIN NAME."
-  exit
-end
-
-puts "Domain Name: #{domain.upcase}"
-
-query.nameservers.each do |ns|
-  puts "Name Server: #{ns.upcase}"
-end if query.nameservers
-
-puts "\nRegistrant:"
-puts "  Organization: #{query.organization}" if query.organization
-puts "  Name:         #{query.name}
-  Address:      #{query.address}
-  Phone:        #{query.phone}
-  Fax:          #{query.fax}
-  Email:        #{query.email}
-"
+puts "#{query.raw_domain_info}\n\n"

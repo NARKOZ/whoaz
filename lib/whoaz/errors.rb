@@ -10,7 +10,4 @@ module Whoaz
 
   # Raised when WHOIS server doesn't return the HTTP status code 200 (OK).
   class ServerError < Error; end
-
-  # Raised when domain name is less than 3 characters and is not registered.
-  class DomainNameError < Error; end
 end

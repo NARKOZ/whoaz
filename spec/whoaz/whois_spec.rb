@@ -1,4 +1,3 @@
-# encoding: utf-8
 require 'spec_helper'
 
 describe Whoaz::Whois do
@@ -15,13 +14,6 @@ describe Whoaz::Whois do
       expect { Whoaz.whois 'google' }.to raise_error Whoaz::InvalidDomain, 'Invalid domain name is specified'
       expect { Whoaz.whois 'goo.gl' }.to raise_error Whoaz::InvalidDomain, 'Invalid domain name is specified'
       expect { Whoaz.whois 'алм.az' }.to raise_error Whoaz::InvalidDomain, 'Domain name contains non-ASCII characters'
-    end
-  end
-
-  describe "less than 3 characters long domain query" do
-    it "should raise DomainNameError" do
-      fake_url Whoaz::WHOIS_URL, 'less_than_3_chars', {:domain => 'i', :dom => '.az'}
-      expect { Whoaz.whois 'i.az' }.to raise_error Whoaz::DomainNameError, 'Whois query for this domain name is not supported.'
     end
   end
 
@@ -71,7 +63,7 @@ describe Whoaz::Whois do
       end
 
       describe "#organization" do
-        specify { expect(subject.organization).to be_nil }
+        specify { expect(subject.organization).to eq('') }
       end
 
       describe "#name" do
@@ -99,13 +91,13 @@ describe Whoaz::Whois do
 
       describe "#name" do
         it "should return a registrant name" do
-          expect(subject.name).to eq('Admin')
+          expect(subject.name).to eq('Admin,')
         end
       end
 
       describe "#address" do
         it "should return a registrant address" do
-          expect(subject.address).to eq('94043, Mountain View, 1600 Amphitheatre Parkway')
+          expect(subject.address).to eq("Country Code: US\n Province: CA\n City: Mountain View\n Street addr: 1600 Amphitheatre Parkway\n Postal code: 94043")
         end
       end
 
@@ -129,7 +121,7 @@ describe Whoaz::Whois do
 
       describe "#nameservers" do
         it "should return domain nameservers" do
-          expect(subject.nameservers).to eq(["ns1.google.com", "ns2.google.com"])
+          expect(subject.nameservers).to eq(["NS1.GOOGLE.COM", "NS2.GOOGLE.COM"])
         end
       end
     end

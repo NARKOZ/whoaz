@@ -6,7 +6,8 @@ Gem::Specification.new do |gem|
   gem.email         = ["mail@narkoz.me"]
   gem.description   = %q{A gem that provides a nice way to interact with Whois.Az}
   gem.summary       = %q{Gets domain whois information from Whois.Az}
-  gem.homepage      = "http://narkoz.github.com/whoaz"
+  gem.homepage      = "https://narkoz.github.io/whoaz"
+  gem.license       = "BSD"
 
   gem.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   gem.files         = `git ls-files`.split("\n")
@@ -14,6 +15,8 @@ Gem::Specification.new do |gem|
   gem.name          = "whoaz"
   gem.require_paths = ["lib"]
   gem.version       = Whoaz::VERSION
+
+  gem.required_ruby_version = ">= 2.0.0"
 
   gem.add_runtime_dependency 'nokogiri'
 
