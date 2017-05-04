@@ -2,7 +2,7 @@
 require 'spec_helper'
 
 describe Whoaz::Whois do
-  it { Whoaz.should respond_to :whois }
+  it { expect(Whoaz).to respond_to :whois }
 
   describe "empty domain query" do
     it "should raise EmptyDomain" do
@@ -30,15 +30,15 @@ describe Whoaz::Whois do
       before  { fake_url Whoaz::WHOIS_URL, 'organization', {:domain => 'google', :dom => '.az'} }
 
       describe "#free?" do
-        specify { Whoaz.whois('google.az').free?.should be_false }
+        specify { expect(Whoaz.whois('google.az').free?).to be false }
       end
 
       describe "#registered?" do
-        specify { Whoaz.whois('google.az').registered?.should be_true }
+        specify { expect(Whoaz.whois('google.az').registered?).to be true }
       end
 
       describe "#available?" do
-        specify { Whoaz.whois('google.az').available?.should be_false }
+        specify { expect(Whoaz.whois('google.az').available?).to be false }
       end
     end
 
@@ -46,15 +46,15 @@ describe Whoaz::Whois do
       before  { fake_url Whoaz::WHOIS_URL, 'free', {:domain => '404', :dom => '.az'} }
 
       describe "#free?" do
-        specify { Whoaz.whois('google.az').free?.should be_true }
+        specify { expect(Whoaz.whois('google.az').free?).to be true }
       end
 
       describe "#registered?" do
-        specify { Whoaz.whois('404.az').registered?.should be_false }
+        specify { expect(Whoaz.whois('404.az').registered?).to be false }
       end
 
       describe "#available?" do
-        specify { Whoaz.whois('google.az').available?.should be_true }
+        specify { expect(Whoaz.whois('google.az').available?).to be true }
       end
     end
   end
@@ -66,17 +66,17 @@ describe Whoaz::Whois do
 
       describe "#domain" do
         it "should return a domain name" do
-          subject.domain.should == 'johnsmith.az'
+          expect(subject.domain).to eq('johnsmith.az')
         end
       end
 
       describe "#organization" do
-        specify { subject.organization.should be_nil }
+        specify { expect(subject.organization).to be_nil }
       end
 
       describe "#name" do
         it "should return a registrant name" do
-          subject.name.should == 'John Smith'
+          expect(subject.name).to eq('John Smith')
         end
       end
     end
@@ -87,49 +87,49 @@ describe Whoaz::Whois do
 
       describe "#domain" do
         it "should return a domain name" do
-          subject.domain.should == 'google.az'
+          expect(subject.domain).to eq('google.az')
         end
       end
 
       describe "#organization" do
         it "should return a registrant organization" do
-          subject.organization.should == 'Google Inc.'
+          expect(subject.organization).to eq('Google Inc.')
         end
       end
 
       describe "#name" do
         it "should return a registrant name" do
-          subject.name.should == 'Admin'
+          expect(subject.name).to eq('Admin')
         end
       end
 
       describe "#address" do
         it "should return a registrant address" do
-          subject.address.should == '94043, Mountain View, 1600 Amphitheatre Parkway'
+          expect(subject.address).to eq('94043, Mountain View, 1600 Amphitheatre Parkway')
         end
       end
 
       describe "#phone" do
         it "should return a registrant phone" do
-          subject.phone.should == '+16503300100'
+          expect(subject.phone).to eq('+16503300100')
         end
       end
 
       describe "#fax" do
         it "should return a registrant fax" do
-          subject.fax.should == '+16506188571'
+          expect(subject.fax).to eq('+16506188571')
         end
       end
 
       describe "#email" do
         it "should return a registrant email" do
-          subject.email.should == 'dns-admin@google.com'
+          expect(subject.email).to eq('dns-admin@google.com')
         end
       end
 
       describe "#nameservers" do
         it "should return domain nameservers" do
-          subject.nameservers.should == ["ns1.google.com", "ns2.google.com"]
+          expect(subject.nameservers).to eq(["ns1.google.com", "ns2.google.com"])
         end
       end
     end
