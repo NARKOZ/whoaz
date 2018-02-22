@@ -5,8 +5,8 @@ require 'net/http'
 require 'nokogiri'
 
 module Whoaz
-  WHOIS_URL     = 'http://nic.az/cgi-bin/whois.cgi'
-  WHOIS_REFERER = 'http://nic.az' # The URL to the WHOIS server. It's the same as <tt>http://whois.az</tt>.
+  WHOIS_URL     = 'http://whois.az/cgi-bin/whois.cgi'
+  WHOIS_REFERER = 'http://whois.az' # The URL to the WHOIS server.
   MAIN_TLD      = %w(az biz.az co.az com.az edu.az gov.az info.az int.az mil.az name.az net.az org.az pp.az pro.az)
   REGIONAL_TLD  = %w(bilesuvar.az ganja.az imishli.az samux.az shamaxi.az shusha.az sumgait.az zaqatala.az)
 
