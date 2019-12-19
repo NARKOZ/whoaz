@@ -3,7 +3,7 @@ require File.expand_path('../lib/whoaz/version', __FILE__)
 
 Gem::Specification.new do |gem|
   gem.authors       = ["Nihad Abbasov"]
-  gem.email         = ["mail@narkoz.me"]
+  gem.email         = ["nihad@42na.in"]
   gem.description   = %q{A gem that provides a nice way to interact with Whois.Az}
   gem.summary       = %q{Gets domain whois information from Whois.Az}
   gem.homepage      = "https://narkoz.github.io/whoaz"
